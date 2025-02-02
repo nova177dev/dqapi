@@ -24,7 +24,6 @@ namespace dqapi.WebApi.Controllers.Express
             _mediator = mediator;
             _responseHandler = responseHandler;
             _env = env;
-            _env = env;
         }
 
         /// <summary>
