@@ -4,17 +4,6 @@
 begin
     set @params = '[' + @params + ']'
 
-    -- secure user identity for logging
-    declare @secured_params nvarchar(max)
-
-    begin try
-        set @secured_params = json_modify(@params, '$[0].password', lower(convert(varchar(256), hashbytes('SHA2_512', json_value(@params,'$[0].password')), 2)))
-    end try
-    begin catch
-        set @secured_params = @params
-    end catch
-    --
-
     declare @trace_uuid varchar(128),
             @response_code smallint = 0,
             @response_message varchar(1024),
@@ -65,7 +54,7 @@ begin
         (
             @trace_uuid,
             schema_name() + '.' + object_name(@@procid),
-            @secured_params,
+            @params,
             isnull(error_message(), @response_message)
         )
 
