@@ -1,9 +1,7 @@
 ﻿using dqapi.Application.Common;
-using dqapi.Domain.Entities.Static.Auth;
 using dqapi.Infrastructure.Data;
 using dqapi.Infrastructure.DTOs.Auth;
 using MediatR;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using System.Text.Json;
 
 namespace dqapi.Application.Auth.Commands.SignUp
