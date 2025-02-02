@@ -113,5 +113,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CICD\project2database.scmp" />
+    <None Include="_backup\dqapi_skeleton.bak" />
   </ItemGroup>
 </Project>
