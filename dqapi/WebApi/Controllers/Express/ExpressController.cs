@@ -18,10 +18,12 @@ namespace dqapi.WebApi.Controllers.Express
     {
         private readonly IMediator _mediator;
         private readonly ResponseHandler _responseHandler;
-        public ExpressController(IMediator mediator, ResponseHandler responseHandler)
+        private readonly IWebHostEnvironment _env;
+        public ExpressController(IMediator mediator, ResponseHandler responseHandler, IWebHostEnvironment env)
         {
             _mediator = mediator;
             _responseHandler = responseHandler;
+            _env = env;
         }
 
         /// <summary>
@@ -37,6 +39,7 @@ namespace dqapi.WebApi.Controllers.Express
             [Required][FromBody] ExpressRequest requestParams,
             string entityName)
         {
+            if (!IsDevelopment()) return NotAvailableInProduction();
             return _responseHandler.HandleResponse(await _mediator.Send(new CreateEntityCommand(entityName, requestParams)));
         }
 
@@ -50,6 +53,7 @@ namespace dqapi.WebApi.Controllers.Express
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ExpressResponse>> GetEntity(string entityName, string entityUuid)
         {
+            if (!IsDevelopment()) return NotAvailableInProduction();
             return _responseHandler.HandleResponse(await _mediator.Send(new GetEntityQuery(entityName, entityUuid)));
         }
 
@@ -68,6 +72,7 @@ namespace dqapi.WebApi.Controllers.Express
             string entityUuid
         )
         {
+            if (!IsDevelopment()) return NotAvailableInProduction();
             return _responseHandler.HandleResponse(await _mediator.Send(new UpdateEntityCommand(entityName, entityUuid, requestParams)));
         }
 
@@ -81,7 +86,23 @@ namespace dqapi.WebApi.Controllers.Express
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ExpressResponse>> DeleteEntity(string entityName, string entityUuid)
         {
+            if (!IsDevelopment()) return NotAvailableInProduction();
             return _responseHandler.HandleResponse(await _mediator.Send(new DeleteEntityCommand(entityName, entityUuid)));
+        }
+
+        private bool IsDevelopment()
+        {
+            return _env.IsDevelopment() || _env.EnvironmentName == "Testing";
+        }
+
+        private ActionResult<ExpressResponse> NotAvailableInProduction()
+        {
+            return NotFound(new ExpressResponse
+            {
+                TraceUuid = HttpContext.TraceIdentifier,
+                ResponseCode = StatusCodes.Status404NotFound,
+                ResponseMessage = "This endpoint is not available in the production environment."
+            });
         }
     }
 }
