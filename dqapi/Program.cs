@@ -70,7 +70,7 @@ builder.Services.AddSwaggerGen(c =>
         Title = "DQ (Do it Quickly) API",
         Version = "v1",
         Description = "This project is designed to streamline the development process for web applications, focusing on rapid prototyping in a development environment.",
-        License = new OpenApiLicense { Url = new Uri("https://git.com") },
+        License = new OpenApiLicense { Name = "MIT", Url = new Uri("https://github.com/nova177dev/dqapi/blob/master/LICENSE.txt") },
         Contact = new OpenApiContact
         {
             Name = "Anton V. Novoseltsev",

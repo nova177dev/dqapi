@@ -1,7 +1,6 @@
 ﻿# globals
 bin/
 obj/
-*.bak
 *.suo
 *.tmp
 *.user
