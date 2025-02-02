@@ -5,3 +5,4 @@ obj/
 *.tmp
 *.user
 .vs
+*.Development.json
