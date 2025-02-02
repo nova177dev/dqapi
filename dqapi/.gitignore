@@ -1,9 +1,7 @@
 ﻿# globals
 bin/
-logs/
 obj/
 *.bak
-*.json
 *.log
 *.suo
 *.tmp
