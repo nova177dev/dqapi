@@ -40,7 +40,7 @@ ensuring that the final product aligns closely with business requirements.
 
 ## Getting Started
 To use this approach in your project:
-1. Set up your database and implement stored procedures using the **JSON In, JSON Out** pattern.
+1. Restore database skeleton from provided backup file (dqapi_skeleton.bak) and implement stored procedures using the **JSON In, JSON Out** pattern.
 2. Once the frontend and database logic are finalized, implement the backend models and controllers.
 3. Switch the frontend to use the backend endpoint for stage/production environment.
 

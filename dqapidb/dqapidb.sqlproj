@@ -79,6 +79,8 @@
     <Folder Include="Security\Roles\Database Roles" />
     <Folder Include="dbo\Functions" />
     <Folder Include="dbo\Functions\Scalar-valued Functions" />
+    <Folder Include="_backup" />
+    <Folder Include="dbo\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\users.sql" />
@@ -107,6 +109,7 @@
     <Build Include="crud\c\Stored Procedures\session.sql" />
     <Build Include="dbo\Functions\Scalar-valued Functions\token_validate.sql" />
     <Build Include="crud\c\Stored Procedures\signOut.sql" />
+    <Build Include="crud\c\Stored Procedures\cleanUp.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CICD\project2database.scmp" />

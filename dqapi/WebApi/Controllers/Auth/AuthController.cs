@@ -55,7 +55,7 @@ namespace dqapi.WebApi.Controllers
         /// <summary>
         /// Current user token Refresh.
         /// </summary>
-        [HttpPost("refreshToken")]
+        [HttpPost("refresh-token")]
         [ProducesResponseType(typeof(SessionResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status401Unauthorized)]

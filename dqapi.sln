@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dqapi", "dqapi\dqapi.csproj
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "dqapidb", "dqapidb\dqapidb.sqlproj", "{BD3DB27C-420D-4361-870A-A7665499B243}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dqapiTest", "dqapiTest\dqapiTest.csproj", "{C068CB44-4BCD-4BBB-80CC-7A76F1B0488D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dqapitest", "dqapiTest\dqapitest.csproj", "{C068CB44-4BCD-4BBB-80CC-7A76F1B0488D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
