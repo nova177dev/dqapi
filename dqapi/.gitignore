@@ -2,7 +2,6 @@
 bin/
 obj/
 *.bak
-*.log
 *.suo
 *.tmp
 *.user
