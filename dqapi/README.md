@@ -41,6 +41,13 @@ ensuring that the final product aligns closely with business requirements.
 ## Getting Started
 To use this approach in your project:
 1. Restore database skeleton from provided backup file (dqapi_skeleton.bak) and implement stored procedures using the **JSON In, JSON Out** pattern.
+2. Set up .env file in the root directory with the following variables:ConnectionStrings__dqapi="Server=localhost;Database=dqapi;User Id=dqapi_app;Password=dqapi_app;TrustServerCertificate=Yes;"
+   AppSettings__PasswordKey=
+   AppSettings__TokenKey=
+   AppSettings__TokenIssuer=
+   AppSettings__TokenAudience=
+   AppSettings__TokenExpireMinutes=
+   AppSettings__TestUserUuid=
 2. Once the frontend and database logic are finalized, implement the backend models and controllers.
 3. Switch the frontend to use the backend endpoint for stage/production environment.
 
@@ -57,7 +64,6 @@ This workflow is ideal for teams looking to prototype quickly and iterate effici
 - **Swashbuckle.AspNetCore**: Generates Swagger pages for RestAPI.
 
 ## Prerequisites
-
 - !!!Critical Engineering Mindset!!!
 - .NET 8.0
 - Visual Studio 2022
