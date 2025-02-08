@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using dqapi.Domain.Entities.Static.Auth;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using DotNetEnv;
 
 namespace dqapi.IntegrationTests
 {
@@ -20,11 +21,13 @@ namespace dqapi.IntegrationTests
         private const string SignInUrl = "/api/auth/sign-in";
         private const string RefreshTokenUrl = "/api/auth/refresh-token";
         private const string SignOutUrl = "/api/auth/sign-out";
-        private const string CleanUpUrl = "/api/express/clean-up";
+        private const string CleanUpUrl = "/api/express/cleanup";
         private const string EntityUrl = "/api/express/poi/";
 
         public FullFlowTest(WebApplicationFactory<Program> factory)
         {
+            Env.Load();
+
             _client = factory.CreateClient();
         }
 
