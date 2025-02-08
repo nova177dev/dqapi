@@ -1,8 +1,10 @@
 ﻿# globals
+logs/
 bin/
 obj/
 *.suo
 *.tmp
 *.user
+.env
 .vs
 *.Development.json

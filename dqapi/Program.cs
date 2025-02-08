@@ -12,8 +12,13 @@ using Serilog.Formatting.Json;
 using System.Data;
 using System.Reflection;
 using System.Text;
+using DotNetEnv; // Add this line
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Load environment variables
+Env.Load();
+builder.Configuration.AddEnvironmentVariables();
 
 // Configure Serilog for file logging (json format)
 Log.Logger = new LoggerConfiguration()
@@ -23,7 +28,6 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File(new JsonFormatter(), "logs/applog-.json", rollingInterval: RollingInterval.Day)
     .CreateLogger();
-
 
 builder.Host.UseSerilog();
 
@@ -37,8 +41,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<AppLogger>();
 builder.Services.AddScoped<AuthHelper>();
 builder.Services.AddScoped<AppDbDataContext>();
-builder.Services.AddScoped<JsonHelper>();
 builder.Services.AddScoped<ResponseHandler>();
+builder.Services.AddSingleton<JsonHelper>();
 
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(options =>
@@ -108,7 +112,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // JWT Setup
 // Token
-string tokenKeyString = builder.Configuration.GetSection("AppSettings:TokenKey").Value!;
+string tokenKeyString = builder.Configuration["AppSettings:TokenKey"] ?? throw new ArgumentNullException(nameof(tokenKeyString), "Couldn't extract token key.");
 
 SymmetricSecurityKey tokenKey = new SymmetricSecurityKey(
         Encoding.UTF8.GetBytes(
@@ -160,8 +164,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 //}
 
 app.UseHttpsRedirection();

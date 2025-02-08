@@ -29,7 +29,7 @@ namespace dqapi.Application.Express.Commands.SignUp
             try
             {
                 JsonElement dbResponse = _dbDataContext.requestDbForJson(Schema, request.EntityName, request.RequestParams);
-                ExpressResponse response = _jsonHelper.DeserializeJson<ExpressResponse>(dbResponse) ?? throw new ArgumentNullException("Response Validation Failed");
+                ExpressResponse response = _jsonHelper.DeserializeJson<ExpressResponse>(dbResponse) ?? throw new ArgumentNullException(nameof(dbResponse), "Response Validation Failed");
 
                 return Task.FromResult(response);
             }

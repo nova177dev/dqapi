@@ -29,7 +29,7 @@ namespace dqapi.WebApi.Controllers
         /// User SignUp.
         /// </summary>
         [AllowAnonymous]
-        [HttpPost("signUp")]
+        [HttpPost("sign-up")]
         [ProducesResponseType(typeof(SignUpResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<SignUpResponse>> SignUp(
@@ -42,7 +42,7 @@ namespace dqapi.WebApi.Controllers
         /// User SignIn.
         /// </summary>
         [AllowAnonymous]
-        [HttpPost("signIn")]
+        [HttpPost("sign-in")]
         [ProducesResponseType(typeof(SignInResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status401Unauthorized)]
@@ -69,7 +69,7 @@ namespace dqapi.WebApi.Controllers
         /// <summary>
         /// User SignOut.
         /// </summary>
-        [HttpPost("signOut")]
+        [HttpPost("sign-out")]
         [ProducesResponseType(typeof(SignOutResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status401Unauthorized)]

@@ -35,7 +35,7 @@ namespace dqapi.Application.Express.Queries.GetEntity
             try
             {
                 JsonElement dbResponse = _dbDataContext.requestDbForJson(Schema, request.EntityName, requestParams);
-                ExpressResponse response = _jsonHelper.DeserializeJson<ExpressResponse>(dbResponse) ?? throw new ArgumentNullException("Response Validation Failed");
+                ExpressResponse response = _jsonHelper.DeserializeJson<ExpressResponse>(dbResponse) ?? throw new ArgumentNullException(nameof(dbResponse), "Response Validation Failed");
 
                 return Task.FromResult(response);
             }
