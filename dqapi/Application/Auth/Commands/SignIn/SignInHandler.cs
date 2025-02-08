@@ -41,9 +41,9 @@ namespace dqapi.Application.Auth.Commands.SignUp
                 }
 
                 var data = dbResponse.GetProperty("data");
-                var passwordHash = data.GetProperty("passwordHash").GetString() ?? throw new ArgumentNullException("Password Hash Validation Failed");
-                var passwordSalt = data.GetProperty("passwordSalt").GetString() ?? throw new ArgumentNullException("Password Salt Validation Failed");
-                var userUuid = data.GetProperty("userUuid").GetString() ?? throw new ArgumentNullException("User Uuid Validation Failed");
+                var passwordHash = data.GetProperty("passwordHash").GetString() ?? throw new ArgumentNullException(nameof(data), "Password Hash Validation Failed");
+                var passwordSalt = data.GetProperty("passwordSalt").GetString() ?? throw new ArgumentNullException(nameof(data), "Password Salt Validation Failed");
+                var userUuid = data.GetProperty("userUuid").GetString() ?? throw new ArgumentNullException(nameof(data), "User Uuid Validation Failed");
 
                 if (passwordHash != Convert.ToBase64String(_authHelper.GetPasswordHash(request.RequestParams.Data.Password, Convert.FromBase64String(passwordSalt))))
                 {
@@ -61,7 +61,7 @@ namespace dqapi.Application.Auth.Commands.SignUp
                 };
 
                 var sessionResponse = _dbDataContext.requestDbForJson(Schema, SessionEntityName, sessionRequest);
-                var sessionData = _jsonHelper.DeserializeJson<SessionResponse>(sessionResponse)?.Data ?? throw new ArgumentNullException("Response Validation Failed");
+                var sessionData = _jsonHelper.DeserializeJson<SessionResponse>(sessionResponse)?.Data ?? throw new ArgumentNullException(nameof(data), "Response Validation Failed");
 
                 return Task.FromResult(new SignInResponse
                 {

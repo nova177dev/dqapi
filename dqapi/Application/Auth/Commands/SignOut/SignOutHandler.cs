@@ -27,7 +27,7 @@ namespace dqapi.Application.Auth.Commands.SignUp
             try
             {
                 JsonElement dbResponse = _dbDataContext.requestDbForJson(Schema, EntityName, request.RequestParams);
-                SignOutResponse response = _jsonHelper.DeserializeJson<SignOutResponse>(dbResponse) ?? throw new ArgumentNullException("Response Validation Failed");
+                SignOutResponse response = _jsonHelper.DeserializeJson<SignOutResponse>(dbResponse) ?? throw new ArgumentNullException(nameof(dbResponse), "Response Validation Failed");
 
                 return Task.FromResult(response);
             }

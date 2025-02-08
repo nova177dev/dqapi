@@ -16,11 +16,11 @@ namespace dqapi.IntegrationTests
         private readonly HttpClient _client;
 
         private const string InvitationToken = "e9139a69-163e-4e41-82b8-3a006ac5c191";
-        private const string SignUpUrl = "/api/auth/signup";
-        private const string SignInUrl = "/api/auth/signin";
+        private const string SignUpUrl = "/api/auth/sign-up";
+        private const string SignInUrl = "/api/auth/sign-in";
         private const string RefreshTokenUrl = "/api/auth/refresh-token";
-        private const string SignOutUrl = "/api/auth/signOut";
-        private const string CleanUpUrl = "/api/express/cleanUp";
+        private const string SignOutUrl = "/api/auth/sign-out";
+        private const string CleanUpUrl = "/api/express/clean-up";
         private const string EntityUrl = "/api/express/poi/";
 
         public FullFlowTest(WebApplicationFactory<Program> factory)
