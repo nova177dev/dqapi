@@ -66,6 +66,8 @@ namespace dqapi.Application.Common
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(3),
+                Issuer = _config.GetSection("AppSettings:JwtIssuer").Value,
+                Audience = _config.GetSection("AppSettings:JwtAudience").Value,
                 SigningCredentials = credentials
             };
 

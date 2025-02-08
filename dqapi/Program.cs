@@ -12,7 +12,7 @@ using Serilog.Formatting.Json;
 using System.Data;
 using System.Reflection;
 using System.Text;
-using DotNetEnv; // Add this line
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -124,8 +124,11 @@ TokenValidationParameters tokenValidationParameters = new()
 {
     IssuerSigningKey = tokenKey,
     ValidateIssuerSigningKey = true,
-    ValidateIssuer = false,
-    ValidateAudience = false
+    ValidateIssuer = true,
+    ValidateAudience = true,
+    ValidateLifetime = true,
+    ValidIssuer = builder.Configuration["AppSettings:JwtIssuer"],
+    ValidAudience = builder.Configuration["AppSettings:JwtAudience"]
 };
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
