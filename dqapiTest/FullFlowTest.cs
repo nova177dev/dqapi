@@ -16,7 +16,8 @@ namespace dqapi.IntegrationTests
     {
         private readonly HttpClient _client;
 
-        private const string InvitationToken = "e9139a69-163e-4e41-82b8-3a006ac5c191";
+        private static readonly string InvitationToken = Environment.GetEnvironmentVariable("TestInvitationToken") ?? throw new InvalidOperationException("Environment variable 'TestInvitationToken' is not set.");
+
         private const string SignUpUrl = "/api/auth/sign-up";
         private const string SignInUrl = "/api/auth/sign-in";
         private const string RefreshTokenUrl = "/api/auth/refresh-token";
@@ -66,12 +67,12 @@ namespace dqapi.IntegrationTests
             var sessionResponseObj = await RefreshTokenAsync(userUuid, authToken);
             ValidateResponse(sessionResponseObj, StatusCodes.Status201Created);
 
-            //// > Test Sign Out
-            //var signOutResponseObjFailed = await SignOutAsync(Guid.NewGuid().ToString(), "");
-            //ValidateResponse(signOutResponseObjFailed, StatusCodes.Status400BadRequest);
+            // > Test Sign Out
+            var signOutResponseObjFailed = await SignOutAsync(Guid.NewGuid().ToString(), "");
+            ValidateResponse(signOutResponseObjFailed, StatusCodes.Status400BadRequest);
 
-            //var signOutResponseObj = await SignOutAsync(userUuid, authToken);
-            //ValidateResponse(signOutResponseObj, StatusCodes.Status200OK);
+            var signOutResponseObj = await SignOutAsync(userUuid, authToken);
+            ValidateResponse(signOutResponseObj, StatusCodes.Status200OK);
 
             // > CleanUp
             var cleanUpRequestParams = new ExpressRequest
