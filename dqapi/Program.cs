@@ -1,8 +1,10 @@
+using DotNetEnv;
 using dqapi.Application.Common;
 using dqapi.Domain.Entities.Common;
 using dqapi.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -10,9 +12,9 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Json;
 using System.Data;
+using System.IO.Compression;
 using System.Reflection;
 using System.Text;
-using DotNetEnv;
 
 try
 {
@@ -67,7 +69,16 @@ try
             };
         });
 
-    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    builder.Services.AddResponseCompression(options =>
+    {
+        options.EnableForHttps = true;
+        options.Providers.Add<GzipCompressionProvider>();
+    });
+    builder.Services.Configure<GzipCompressionProviderOptions>(options =>
+    {
+        options.Level = CompressionLevel.Fastest;
+    });
+
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c =>
     {
@@ -174,6 +185,7 @@ try
     }
 
     app.UseHttpsRedirection();
+    app.UseResponseCompression();
     app.UseAuthentication();
     app.UseAuthorization();
     app.UseMiddleware<ExceptionHandler>();
