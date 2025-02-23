@@ -1,7 +1,7 @@
 ﻿using dqapi.Infrastructure.DTOs.Express;
 using MediatR;
 
-namespace dqapi.Application.Express.Commands.CreateEntity
+namespace dqapi.Application.Express.Commands
 {
     public class CreateEntityCommand : IRequest<ExpressResponse>
     {

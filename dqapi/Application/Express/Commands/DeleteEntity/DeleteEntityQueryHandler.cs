@@ -1,11 +1,10 @@
 ﻿using dqapi.Application.Common;
-using dqapi.Application.Express.Commands.DeleteEntity;
 using dqapi.Infrastructure.Data;
 using dqapi.Infrastructure.DTOs.Express;
 using MediatR;
 using System.Text.Json;
 
-namespace dqapi.Application.Express.Commands.GetEntity
+namespace dqapi.Application.Express.Commands
 {
     public class DeleteEntityQueryHandler : IRequestHandler<DeleteEntityCommand, ExpressResponse>
     {

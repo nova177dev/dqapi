@@ -1,10 +1,9 @@
 ﻿using dqapi.Application.Common;
-using dqapi.Application.Express.Commands.CreateEntity;
 using dqapi.Infrastructure.Data;
 using MediatR;
 
 
-namespace dqapi.Application.Express.Commands.CreateEntityCompressed
+namespace dqapi.Application.Express.Commands
 {
     public class CreateEntityCompressedHandler : IRequestHandler<CreateEntityCompressedCommand, byte[]>
     {

@@ -4,7 +4,7 @@ using dqapi.Infrastructure.DTOs.Express;
 using MediatR;
 using System.Text.Json;
 
-namespace dqapi.Application.Express.Queries.GetEntityCompressed
+namespace dqapi.Application.Express.Queries
 {
     public class GetEntityCompressedQueryHandler : IRequestHandler<GetEntityCompressedQuery, byte[]>
     {

@@ -1,12 +1,10 @@
 ﻿using dqapi.Application.Common;
-using dqapi.Application.Express.Commands.CreateEntity;
 using dqapi.Infrastructure.Data;
 using dqapi.Infrastructure.DTOs.Express;
 using MediatR;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using System.Text.Json;
 
-namespace dqapi.Application.Express.Commands.SignUp
+namespace dqapi.Application.Express.Commands
 {
     public class CreateEntityHandler : IRequestHandler<CreateEntityCommand, ExpressResponse>
     {

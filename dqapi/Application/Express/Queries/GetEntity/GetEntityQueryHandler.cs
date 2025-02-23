@@ -4,9 +4,9 @@ using dqapi.Infrastructure.DTOs.Express;
 using MediatR;
 using System.Text.Json;
 
-namespace dqapi.Application.Express.Queries.GetEntity
+namespace dqapi.Application.Express.Queries
 {
-    public class DeleteEntityQueryHandler : IRequestHandler<GetEntityQuery, ExpressResponse>
+    public class GetEntityQueryHandler : IRequestHandler<GetEntityQuery, ExpressResponse>
     {
         private readonly AppLogger _appLogger;
         private readonly AuthHelper _authHelper;
@@ -14,7 +14,7 @@ namespace dqapi.Application.Express.Queries.GetEntity
         private readonly JsonHelper _jsonHelper;
 
 
-        public DeleteEntityQueryHandler(AppLogger appLogger, AuthHelper authHelper, AppDbDataContext dbDataContext, JsonHelper jsonHelper)
+        public GetEntityQueryHandler(AppLogger appLogger, AuthHelper authHelper, AppDbDataContext dbDataContext, JsonHelper jsonHelper)
         {
             _appLogger = appLogger;
             _authHelper = authHelper;

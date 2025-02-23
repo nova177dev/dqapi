@@ -1,7 +1,7 @@
 ﻿using dqapi.Infrastructure.DTOs.Express;
 using MediatR;
 
-namespace dqapi.Application.Express.Commands.DeleteEntity
+namespace dqapi.Application.Express.Commands
 {
     public class DeleteEntityCommand : IRequest<ExpressResponse>
     {

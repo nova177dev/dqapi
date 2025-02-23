@@ -1,20 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using dqapi.Application.Express.Queries.GetEntity;
+using dqapi.Application.Express.Queries;
 using dqapi.Domain.Entities.Common;
 using dqapi.Application.Express.Commands.CreateEntity;
 using System.ComponentModel.DataAnnotations;
-using dqapi.Application.Express.Commands.DeleteEntity;
+using dqapi.Application.Express.Commands;
 using dqapi.Application.Common;
 using dqapi.Infrastructure.DTOs.Express;
 using Microsoft.AspNetCore.Authorization;
-using dqapi.Application.Express.Queries.GetEntityCompressed;
-using System.IO.Compression;
-using System.Text;
 using Microsoft.Net.Http.Headers;
-using System.Threading;
-using Microsoft.AspNetCore.Http.HttpResults;
-using dqapi.Application.Express.Commands.CreateEntityCompressed;
+
 
 namespace dqapi.WebApi.Controllers.Express
 {

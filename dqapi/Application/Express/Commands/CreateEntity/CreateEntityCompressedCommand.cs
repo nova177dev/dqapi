@@ -1,7 +1,7 @@
 ﻿using dqapi.Infrastructure.DTOs.Express;
 using MediatR;
 
-namespace dqapi.Application.Express.Commands.CreateEntityCompressed
+namespace dqapi.Application.Express.Commands
 {
     public class CreateEntityCompressedCommand : IRequest<byte[]>
     {

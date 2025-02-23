@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace dqapi.Application.Express.Queries.GetEntityCompressed
+namespace dqapi.Application.Express.Queries
 {
     public class GetEntityCompressedQuery : IRequest<byte[]>
     {

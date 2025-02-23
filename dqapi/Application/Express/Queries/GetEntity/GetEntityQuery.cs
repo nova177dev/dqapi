@@ -1,7 +1,7 @@
 ﻿using dqapi.Infrastructure.DTOs.Express;
 using MediatR;
 
-namespace dqapi.Application.Express.Queries.GetEntity
+namespace dqapi.Application.Express.Queries
 {
     public class GetEntityQuery : IRequest<ExpressResponse>
     {
