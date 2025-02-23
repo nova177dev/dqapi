@@ -26,5 +26,21 @@ namespace dqapi.Infrastructure.Data
 
             return _jsonHelper.DeserializeJson<JsonElement>(jsonResponse);
         }
+
+        public byte[] requestDb(string schema, string storedProcedureName, object requestParams)
+        {
+            byte[]? dbResponse = _dbConnection.QueryFirstOrDefault<byte[]>(
+                schema + "." + storedProcedureName,
+                new { @params = _jsonHelper.SerializeObject(requestParams) },
+                commandType: CommandType.StoredProcedure
+            );
+
+            if (dbResponse == null)
+            {
+                throw new InvalidOperationException("The database query didn't return any data.");
+            }
+
+            return dbResponse;
+        }
     }
 }

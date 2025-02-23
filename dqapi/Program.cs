@@ -185,7 +185,7 @@ try
     }
 
     app.UseHttpsRedirection();
-    app.UseResponseCompression();
+    //app.UseResponseCompression();
     app.UseAuthentication();
     app.UseAuthorization();
     app.UseMiddleware<ExceptionHandler>();

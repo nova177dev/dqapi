@@ -8,6 +8,13 @@ using dqapi.Application.Express.Commands.DeleteEntity;
 using dqapi.Application.Common;
 using dqapi.Infrastructure.DTOs.Express;
 using Microsoft.AspNetCore.Authorization;
+using dqapi.Application.Express.Queries.GetEntityCompressed;
+using System.IO.Compression;
+using System.Text;
+using Microsoft.Net.Http.Headers;
+using System.Threading;
+using Microsoft.AspNetCore.Http.HttpResults;
+using dqapi.Application.Express.Commands.CreateEntityCompressed;
 
 namespace dqapi.WebApi.Controllers.Express
 {
@@ -88,6 +95,57 @@ namespace dqapi.WebApi.Controllers.Express
         {
             if (!IsDevelopment()) return NotAvailableInProduction();
             return _responseHandler.HandleResponse(await _mediator.Send(new DeleteEntityCommand(entityName, entityUuid)));
+        }
+
+        [HttpPost("{entityName}/{entityUuid}/compressed")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CreateEntityCompressed(
+            [Required][FromBody] ExpressRequest requestParams,
+            string entityName)
+        {
+            if (!IsDevelopment()) return NotFound();
+            try
+            {
+                var result = await _mediator.Send(new CreateEntityCompressedCommand(entityName, requestParams));
+
+                Response.ContentType = "application/json; charset=utf-16";
+                Response.Headers.Append("Content-Encoding", "gzip");
+                Response.Headers.Vary = HeaderNames.AcceptEncoding;
+
+                return File(result, "application/json; charset=utf-16");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{entityName}/{entityUuid}/compressed")]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetEntityCompressed(string entityName, string entityUuid)
+        {
+            if (!IsDevelopment()) return NotFound();
+            try
+            {
+                var result = await _mediator.Send(new GetEntityCompressedQuery(entityName, entityUuid));
+
+                Response.ContentType = "application/json; charset=utf-16";
+                Response.Headers.Append("Content-Encoding", "gzip");
+                Response.Headers.Vary = HeaderNames.AcceptEncoding;
+
+                return File(result, "application/json; charset=utf-16");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         private bool IsDevelopment()

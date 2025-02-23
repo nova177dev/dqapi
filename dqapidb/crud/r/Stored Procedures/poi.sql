@@ -1,4 +1,4 @@
-﻿create procedure r.poi (
+﻿create procedure [r].[poi] (
     @params nvarchar(max)
 ) as
 begin
@@ -12,11 +12,14 @@ begin
             @response_message varchar(1024),
             @error_message varchar(128),
             --
-            @uuid varchar(36)
+            @uuid varchar(36),
+            @compress bit = 0,
+            @result varbinary(max)
 
     begin try
         select  @auth_token = replace(json_value(value,'$.authToken'), 'bearer ', ''),
                 @trace_uuid = isnull(json_value(value,'$.traceUuid'), 0),
+                @compress = isnull(json_value(value,'$.compress'), 0),
                 --
                 @uuid = json_value(value,'$.uuid')
         from openjson(@params) p
@@ -29,32 +32,87 @@ begin
                 where uuid = @uuid
             )
             begin
-                select  @trace_uuid as traceUuid,
-                        200 as responseCode,
-                        'Ok' as responseMessage,
-                        @uuid as uuid,
-                        json_query(
+                if @compress = 0
+                begin
+                    select  @trace_uuid as traceUuid,
+                            200 as responseCode,
+                            'Ok' as responseMessage,
+                            @uuid as uuid,
+                            json_query(
+                            (
+                                select	uuid,
+                                        code,
+                                        [name],
+                                        [address],
+                                        [description],
+                                        latitude,
+                                        longitude
+                                from dbo.poi (nolock)
+                                where uuid = @uuid
+                                for json path, without_array_wrapper
+                            ), '$') [data]
+                    for json path, without_array_wrapper
+                end
+                else
+                begin
+                    set @result =
+                    (
+                        compress
                         (
-                            select	uuid,
-                                    code,
-                                    [name],
-                                    [address],
-                                    [description],
-                                    latitude,
-                                    longitude
-                            from dbo.poi (nolock)
-                            where uuid = @uuid
-                            for json path, without_array_wrapper
-                        ), '$') [data]
-                for json path, without_array_wrapper
+                            (
+                                select  @trace_uuid as traceUuid,
+                                        200 as responseCode,
+                                        'Ok' as responseMessage,
+                                        @uuid as uuid,
+                                        json_query(
+                                        (
+                                            select	uuid,
+                                                    code,
+                                                    [name],
+                                                    [address],
+                                                    [description],
+                                                    latitude,
+                                                    longitude
+                                            from dbo.poi (nolock)
+                                            where uuid = @uuid
+                                            for json path, without_array_wrapper
+                                        ), '$') [data]
+                                for json path, without_array_wrapper
+                            )
+                        )
+                    )
+
+                    select @result
+                end
             end
             else
             begin
-                select  @auth_token as authToken,
-                        @trace_uuid as traceUuid,
-                        404 as responseCode,
-                        'Not Found' as responseMessage
-                for json path, without_array_wrapper
+                if @compress = 0
+                begin
+                    select  @auth_token as authToken,
+                            @trace_uuid as traceUuid,
+                            404 as responseCode,
+                            'Not Found' as responseMessage
+                    for json path, without_array_wrapper
+                end
+                else
+                begin
+                    set @result =
+                    (
+                        compress
+                        (
+                            (
+                                select  @auth_token as authToken,
+                                        @trace_uuid as traceUuid,
+                                        404 as responseCode,
+                                        'Not Found' as responseMessage
+                                for json path, without_array_wrapper
+                            )
+                        )
+                    )
+
+                    select @result
+                end
             end
         end
         else
@@ -80,10 +138,30 @@ begin
             isnull(error_message(), @response_message)
         )
 
-        select	@trace_uuid as traceUuid,
-                400 as responseCode,
-                'Unexpected error (trace UUID: ' + lower(convert(varchar, @trace_uuid)) + '). Please contact support team.' as responseMessage
-        for json path, without_array_wrapper
+        if @compress = 0
+        begin
+            select	@trace_uuid as traceUuid,
+                    400 as responseCode,
+                    'Unexpected error (trace UUID: ' + lower(convert(varchar, @trace_uuid)) + '). Please contact support team.' as responseMessage
+            for json path, without_array_wrapper
+        end
+        else
+        begin
+            set @result =
+            (
+                compress
+                (
+                    (
+                        select	@trace_uuid as traceUuid,
+                                400 as responseCode,
+                                'Unexpected error (trace UUID: ' + lower(convert(varchar, @trace_uuid)) + '). Please contact support team.' as responseMessage
+                        for json path, without_array_wrapper
+                    )
+                )
+            )
+
+            select @result
+        end
     end catch
 end
 go
