@@ -4,7 +4,7 @@ using dqapi.Infrastructure.Data;
 using dqapi.Infrastructure.DTOs.Auth;
 using MediatR;
 
-namespace dqapi.Application.Auth.Commands.SignUp
+namespace dqapi.Application.Auth.Commands.SignIn
 {
     public class SignInHandler : IRequestHandler<SignInCommand, SignInResponse>
     {
@@ -23,9 +23,9 @@ namespace dqapi.Application.Auth.Commands.SignUp
 
         public Task<SignInResponse> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
-            const string Schema = "c"; // Crud > Create
-            const string SignInEntityName = "signIn";
-            const string SessionEntityName = "session";
+            const string SCHEMA = "c"; // Crud > Create
+            const string SIGN_IN_ENTITY_NAME = "signIn";
+            const string SESSION_ENTITY_NAME = "session";
             try
             {
                 var requestDb = new SignInRequestDB
@@ -33,7 +33,7 @@ namespace dqapi.Application.Auth.Commands.SignUp
                     Login = request.RequestParams.Data.Login
                 };
 
-                var dbResponse = _dbDataContext.requestDbForJson(Schema, SignInEntityName, requestDb);
+                var dbResponse = _dbDataContext.RequestDbForJson(SCHEMA, SIGN_IN_ENTITY_NAME, requestDb);
 
                 if (dbResponse.GetProperty("responseCode").GetInt32() != StatusCodes.Status200OK)
                 {
@@ -60,7 +60,7 @@ namespace dqapi.Application.Auth.Commands.SignUp
                     }
                 };
 
-                var sessionResponse = _dbDataContext.requestDbForJson(Schema, SessionEntityName, sessionRequest);
+                var sessionResponse = _dbDataContext.RequestDbForJson(SCHEMA, SESSION_ENTITY_NAME, sessionRequest);
                 var sessionData = _jsonHelper.DeserializeJson<SessionResponse>(sessionResponse)?.Data ?? throw new ArgumentNullException(nameof(data), "Response Validation Failed");
 
                 return Task.FromResult(new SignInResponse

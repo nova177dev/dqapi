@@ -21,8 +21,8 @@ namespace dqapi.Application.Auth.Commands.SignUp
         }
         public Task<SignUpResponse> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
-            const string Schema = "c"; // Crud > Create
-            const string EntityName = "signUp";
+            const string SCHEMA = "c"; // Crud > Create
+            const string ENTITY_NAME = "signUp";
             try
             {
                 byte[] passwordSalt = _authHelper.GetPasswordSalt();
@@ -42,7 +42,7 @@ namespace dqapi.Application.Auth.Commands.SignUp
 
                 };
 
-                JsonElement dbResponse = _dbDataContext.requestDbForJson(Schema, EntityName, requestDb);
+                JsonElement dbResponse = _dbDataContext.RequestDbForJson(SCHEMA, ENTITY_NAME, requestDb);
                 SignUpResponse response = _jsonHelper.DeserializeJson<SignUpResponse>(dbResponse) ?? throw new ArgumentNullException(nameof(dbResponse), "Response Validation Failed");
 
                 return Task.FromResult(response);

@@ -1,4 +1,4 @@
-﻿using dqapi.Infrastructure.Data;
+﻿﻿using dqapi.Infrastructure.Data;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -77,16 +77,6 @@ namespace dqapi.Application.Common
             return tokenHandler.WriteToken(token);
         }
 
-        //public virtual Session CreateSession(string userUuid, string token)
-        //{
-        //    Session session = _dataContext.RequestSession(new SessionRequest()
-        //    {
-        //        UserUuid = userUuid,
-        //        AuthToken = token
-        //    });
-
-        //    return session;
-        //}
         public virtual string GetUserUuid()
         {
             return _httpContextAccessor?.HttpContext?.User.FindFirst("userUuid")?.Value.ToLower() ?? throw new Exception("Couldn't extract user UUID.");

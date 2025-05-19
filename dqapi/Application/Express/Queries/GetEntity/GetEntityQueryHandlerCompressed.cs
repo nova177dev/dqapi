@@ -24,7 +24,7 @@ namespace dqapi.Application.Express.Queries
 
         public Task<byte[]> Handle(GetEntityCompressedQuery request, CancellationToken cancellationToken)
         {
-            const string Schema = "r"; // CRUD > Read
+            const string SCHEMA = "r"; // CRUD > Read
 
             ExpressRequest requestParams = new()
             {
@@ -35,7 +35,7 @@ namespace dqapi.Application.Express.Queries
 
             try
             {
-                byte[] dbResponse = _dbDataContext.requestDb(Schema, request.EntityName, requestParams);
+                byte[] dbResponse = _dbDataContext.RequestDb(SCHEMA, request.EntityName, requestParams);
                 return Task.FromResult(dbResponse);
             }
             catch (Exception ex)

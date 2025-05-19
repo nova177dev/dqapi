@@ -22,13 +22,13 @@ namespace dqapi.Application.Express.Commands.CreteEntity
         }
         public Task<ExpressResponse> Handle(UpdateEntityCommand request, CancellationToken cancellationToken)
         {
-            const string Schema = "u"; // crUd > Update
+            const string SCHEMA = "u"; // crUd > Update
             request.RequestParams.AuthToken = _authHelper.GetAuthorizationToken();
             request.RequestParams.Uuid = request.EntityUuid;
 
             try
             {
-                JsonElement dbResponse = _dbDataContext.requestDbForJson(Schema, request.EntityName, request.RequestParams);
+                JsonElement dbResponse = _dbDataContext.RequestDbForJson(SCHEMA, request.EntityName, request.RequestParams);
                 ExpressResponse response = _jsonHelper.DeserializeJson<ExpressResponse>(dbResponse) ?? throw new ArgumentNullException(nameof(dbResponse), "Response Validation Failed");
 
                 return Task.FromResult(response);

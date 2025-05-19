@@ -20,14 +20,14 @@ namespace dqapi.Application.Express.Commands
         }
         public Task<byte[]> Handle(CreateEntityCompressedCommand request, CancellationToken cancellationToken)
         {
-            const string Schema = "c"; // CRUD > Create
+            const string SCHEMA = "c"; // CRUD > Create
             request.RequestParams.AuthToken = _authHelper.GetAuthorizationToken();
             request.RequestParams.Compress = true;
             byte[] dbResponse;
 
             try
             {
-                dbResponse = _dbDataContext.requestDb(Schema, request.EntityName, request.RequestParams);
+                dbResponse = _dbDataContext.RequestDb(SCHEMA, request.EntityName, request.RequestParams);
                 return Task.FromResult(dbResponse);
             }
             catch (Exception ex)

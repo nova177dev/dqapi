@@ -15,7 +15,7 @@ namespace dqapi.Infrastructure.Data
             _jsonHelper = jsonHelper;
         }
 
-        public JsonElement requestDbForJson(string schema, string storedProcedureName, object requestParams)
+        public JsonElement RequestDbForJson(string schema, string storedProcedureName, object requestParams)
         {
             string str = _dbConnection.ConnectionString;
             string? jsonResponse = _dbConnection.QueryFirstOrDefault<string>(
@@ -27,7 +27,7 @@ namespace dqapi.Infrastructure.Data
             return _jsonHelper.DeserializeJson<JsonElement>(jsonResponse);
         }
 
-        public byte[] requestDb(string schema, string storedProcedureName, object requestParams)
+        public byte[] RequestDb(string schema, string storedProcedureName, object requestParams)
         {
             byte[]? dbResponse = _dbConnection.QueryFirstOrDefault<byte[]>(
                 schema + "." + storedProcedureName,

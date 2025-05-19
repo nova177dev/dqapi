@@ -24,7 +24,7 @@ namespace dqapi.Application.Express.Queries
 
         public Task<ExpressResponse> Handle(GetEntityQuery request, CancellationToken cancellationToken)
         {
-            const string Schema = "r"; // CRUD > Read
+            const string SCHEMA = "r"; // CRUD > Read
 
             ExpressRequest requestParams = new()
             {
@@ -34,7 +34,7 @@ namespace dqapi.Application.Express.Queries
 
             try
             {
-                JsonElement dbResponse = _dbDataContext.requestDbForJson(Schema, request.EntityName, requestParams);
+                JsonElement dbResponse = _dbDataContext.RequestDbForJson(SCHEMA, request.EntityName, requestParams);
                 ExpressResponse response = _jsonHelper.DeserializeJson<ExpressResponse>(dbResponse) ?? throw new ArgumentNullException(nameof(dbResponse), "Response Validation Failed");
 
                 return Task.FromResult(response);

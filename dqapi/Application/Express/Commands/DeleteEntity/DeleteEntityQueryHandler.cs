@@ -24,7 +24,7 @@ namespace dqapi.Application.Express.Commands
 
         public Task<ExpressResponse> Handle(DeleteEntityCommand request, CancellationToken cancellationToken)
         {
-            const string Schema = "d"; // cruD > Delete
+            const string SCHEMA = "d"; // cruD > Delete
 
             ExpressRequest requestParams = new()
             {
@@ -34,7 +34,7 @@ namespace dqapi.Application.Express.Commands
 
             try
             {
-                JsonElement dbResponse = _dbDataContext.requestDbForJson(Schema, request.EntityName, requestParams);
+                JsonElement dbResponse = _dbDataContext.RequestDbForJson(SCHEMA, request.EntityName, requestParams);
                 ExpressResponse response = _jsonHelper.DeserializeJson<ExpressResponse>(dbResponse) ?? throw new ArgumentNullException(nameof(dbResponse), "Response Validation Failed");
 
                 return Task.FromResult(response);

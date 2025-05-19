@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using dqapi.Application.Common;
 using dqapi.Infrastructure.DTOs.Auth;
 using dqapi.Application.Auth.Commands.SignUp;
+using dqapi.Application.Auth.Commands.SignIn;
+using dqapi.Application.Auth.Commands.RefreshToken;
+using dqapi.Application.Auth.Commands.SignOut;
 using Microsoft.AspNetCore.Authorization;
 
 namespace dqapi.WebApi.Controllers
