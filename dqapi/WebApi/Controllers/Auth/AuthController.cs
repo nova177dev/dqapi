@@ -9,6 +9,7 @@ using dqapi.Application.Auth.Commands.SignIn;
 using dqapi.Application.Auth.Commands.RefreshToken;
 using dqapi.Application.Auth.Commands.SignOut;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace dqapi.WebApi.Controllers
 {
@@ -32,6 +33,7 @@ namespace dqapi.WebApi.Controllers
         /// User SignUp.
         /// </summary>
         [AllowAnonymous]
+        [EnableRateLimiting("anonymous")]
         [HttpPost("sign-up")]
         [ProducesResponseType(typeof(SignUpResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status400BadRequest)]
@@ -45,6 +47,7 @@ namespace dqapi.WebApi.Controllers
         /// User SignIn.
         /// </summary>
         [AllowAnonymous]
+        [EnableRateLimiting("anonymous")]
         [HttpPost("sign-in")]
         [ProducesResponseType(typeof(SignInResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status400BadRequest)]
@@ -58,6 +61,7 @@ namespace dqapi.WebApi.Controllers
         /// <summary>
         /// Current user token Refresh.
         /// </summary>
+        [EnableRateLimiting("authenticated")]
         [HttpPost("refresh-token")]
         [ProducesResponseType(typeof(SessionResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status400BadRequest)]
@@ -72,6 +76,7 @@ namespace dqapi.WebApi.Controllers
         /// <summary>
         /// User SignOut.
         /// </summary>
+        [EnableRateLimiting("authenticated")]
         [HttpPost("sign-out")]
         [ProducesResponseType(typeof(SignOutResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ErrorMessage), StatusCodes.Status400BadRequest)]

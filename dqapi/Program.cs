@@ -15,6 +15,7 @@ using System.Data;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
+using System.Threading.RateLimiting;
 
 try
 {
@@ -47,6 +48,76 @@ try
     builder.Services.AddScoped<AppDbDataContext>();
     builder.Services.AddScoped<ResponseHandler>();
     builder.Services.AddSingleton<JsonHelper>();
+    
+    // Configure Rate Limiting
+    builder.Services.AddRateLimiter(options =>
+    {
+        // Default global rate limit policy
+        options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+            RateLimitPartition.GetFixedWindowLimiter(
+                partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? httpContext.Request.Headers.Host.ToString(),
+                factory: partition => new FixedWindowRateLimiterOptions
+                {
+                    AutoReplenishment = true,
+                    PermitLimit = 100,
+                    Window = TimeSpan.FromMinutes(1)
+                }));
+
+        // Anonymous endpoints policy (sign-up, sign-in)
+        options.AddPolicy("anonymous", httpContext =>
+            RateLimitPartition.GetFixedWindowLimiter(
+                partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? httpContext.Request.Headers.Host.ToString(),
+                factory: partition => new FixedWindowRateLimiterOptions
+                {
+                    AutoReplenishment = true,
+                    PermitLimit = 10,
+                    Window = TimeSpan.FromMinutes(1)
+                }));
+
+        // Authenticated endpoints policy
+        options.AddPolicy("authenticated", httpContext =>
+            RateLimitPartition.GetTokenBucketLimiter(
+                partitionKey: httpContext.User?.Identity?.Name ?? 
+                              httpContext.Connection.RemoteIpAddress?.ToString() ?? 
+                              httpContext.Request.Headers.Host.ToString(),
+                factory: partition => new TokenBucketRateLimiterOptions
+                {
+                    AutoReplenishment = true,
+                    TokenLimit = 50,
+                    TokensPerPeriod = 10,
+                    ReplenishmentPeriod = TimeSpan.FromSeconds(10)
+                }));
+
+        // Express controller endpoints policy
+        options.AddPolicy("express", httpContext =>
+            RateLimitPartition.GetSlidingWindowLimiter(
+                partitionKey: httpContext.User?.Identity?.Name ?? 
+                              httpContext.Connection.RemoteIpAddress?.ToString() ?? 
+                              httpContext.Request.Headers.Host.ToString(),
+                factory: partition => new SlidingWindowRateLimiterOptions
+                {
+                    AutoReplenishment = true,
+                    PermitLimit = 30,
+                    Window = TimeSpan.FromMinutes(1),
+                    SegmentsPerWindow = 6
+                }));
+
+        // Configure rate limit exceeded response
+        options.OnRejected = async (context, token) =>
+        {
+            context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+            context.HttpContext.Response.ContentType = "application/json";
+            
+            var errorMessage = new ErrorMessage
+            {
+                TraceUuid = context.HttpContext.TraceIdentifier,
+                ResponseCode = StatusCodes.Status429TooManyRequests,
+                ResponseMessage = "Too many requests. Please try again later."
+            };
+            
+            await context.HttpContext.Response.WriteAsJsonAsync(errorMessage, token);
+        };
+    });
 
     builder.Services.AddControllers()
         .ConfigureApiBehaviorOptions(options =>
@@ -185,6 +256,10 @@ try
     }
 
     app.UseHttpsRedirection();
+    
+    // Apply rate limiting middleware
+    app.UseRateLimiter();
+    
     app.UseAuthentication();
     app.UseAuthorization();
     app.UseMiddleware<ExceptionHandler>();

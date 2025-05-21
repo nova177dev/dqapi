@@ -8,6 +8,7 @@ using dqapi.Application.Express.Commands;
 using dqapi.Application.Common;
 using dqapi.Infrastructure.DTOs.Express;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Net.Http.Headers;
 
 
@@ -15,6 +16,7 @@ namespace dqapi.WebApi.Controllers.Express
 {
     [Authorize]
     [ApiController]
+    [EnableRateLimiting("express")]
     [Route("api/express")]
     public class ExpressController : ControllerBase
     {
